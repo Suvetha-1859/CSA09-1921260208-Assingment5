@@ -1,1 +1,13 @@
+CREATE DATABASE transport_db;
 
+USE transport_db;
+
+CREATE TABLE bus_pass (
+    pass_id VARCHAR(20) PRIMARY KEY,
+    reg_no VARCHAR(20),
+    name VARCHAR(100),
+    route_no INT,
+    boarding_stop VARCHAR(100),
+    validity_date DATE,
+    amount DOUBLE
+);
