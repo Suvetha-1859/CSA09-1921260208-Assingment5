@@ -1,1 +1,63 @@
 
+public class B2AdversarialInput {
+
+    public static void main(String[] args) {
+
+        String id = "admin";
+        String pwd = "x' OR '1'='1' --";
+
+        // Unsafe SQL Query
+        String unsafeSql =
+            "SELECT * FROM users WHERE id='" + id
+            + "' AND pwd='" + pwd + "'";
+
+        System.out.println("UNSAFE SQL QUERY:");
+        System.out.println(unsafeSql);
+
+        // Safe SQL Query using PreparedStatement
+        String safeSql =
+            "SELECT * FROM users WHERE id=? AND pwd=?";
+
+        System.out.println("\nSAFE SQL QUERY:");
+        System.out.println(safeSql);
+
+        System.out.println(
+            "User input is treated as data using PreparedStatement."
+        );
+
+        // Damaged Bus-Pass File Tests
+        System.out.println("\nDAMAGED BUS-PASS TESTS:");
+
+        String[] records = {
+            "P10,1921,Name",
+            "P11,1922,Name,5,not-a-number",
+            ""
+        };
+
+        for (String record : records) {
+
+            if (record.trim().isEmpty()) {
+                System.out.println("Empty line: Skipped");
+                continue;
+            }
+
+            String[] fields = record.split(",", -1);
+
+            if (fields.length != 5) {
+                System.out.println(
+                    record + " : Invalid field count"
+                );
+                continue;
+            }
+
+            try {
+                Double.parseDouble(fields[4]);
+                System.out.println(record + " : Valid record");
+            } catch (NumberFormatException e) {
+                System.out.println(
+                    record + " : Invalid amount"
+                );
+            }
+        }
+    }
+}
